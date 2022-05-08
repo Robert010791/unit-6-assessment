@@ -161,12 +161,10 @@ const reset = () => {
 };
 
 const getPlayerStats = () => {
-  axios
-    .get('http://localhost:3000/api/player')
-    .then(({ data: { wins, losses } }) => {
-      winsText.textContent = `Wins: ${wins}`;
-      lossesTest.textContent = `Losses: ${losses}`;
-    });
+  axios.get('/api/player').then(({ data: { wins, losses } }) => {
+    winsText.textContent = `Wins: ${wins}`;
+    lossesTest.textContent = `Losses: ${losses}`;
+  });
 };
 
 const getAllBots = () => {
