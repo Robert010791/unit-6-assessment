@@ -21,7 +21,7 @@ rollbar.log('Hello world!');
 
 app.get('/', (req, res) => {
   rollbar.info('HTML served successfully');
-  res.sendFile(path.join(__dirname, '/index.html'));
+  res.sendFile(path.join(__dirname, '../index.html'));
 });
 
 app.get('/api/robots', (req, res) => {
