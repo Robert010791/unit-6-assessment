@@ -8,8 +8,20 @@ const cors = require('cors');
 app.use(express.json());
 app.use(cors());
 
+// include and initialize the rollbar library with your access token
+var Rollbar = require('rollbar');
+var rollbar = new Rollbar({
+  accessToken: '729e657f24a049589889153226a5d5b2',
+  captureUncaught: true,
+  captureUnhandledRejections: true,
+});
+
+// record a generic message and send it to Rollbar
+rollbar.log('Hello world!');
+
 app.get('/api/robots', (req, res) => {
   try {
+    rollbar.info('Someone got the list of all the robots');
     res.status(200).send(bots);
   } catch (error) {
     console.log('ERROR GETTING BOTS', error);
@@ -19,6 +31,7 @@ app.get('/api/robots', (req, res) => {
 
 app.get('/api/robots/five', (req, res) => {
   try {
+    rollbar.log('Someone drew five robots');
     let shuffled = shuffleArray(bots);
     let choices = shuffled.slice(0, 5);
     let compDuo = shuffled.slice(6, 8);
@@ -57,9 +70,11 @@ app.post('/api/duel', (req, res) => {
     // comparing the total health to determine a winner
     if (compHealthAfterAttack > playerHealthAfterAttack) {
       playerRecord.losses++;
+      rollbar.log('Player has lost');
       res.status(200).send('You lost!');
     } else {
       playerRecord.losses++;
+      rollbar.log('Player has won');
       res.status(200).send('You won!');
     }
   } catch (error) {
@@ -76,6 +91,8 @@ app.get('/api/player', (req, res) => {
     res.sendStatus(400);
   }
 });
+
+app.use(rollbar.errorHandler());
 
 const port = process.env.PORT || 3000;
 
