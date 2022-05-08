@@ -1,3 +1,6 @@
+const baseURL =
+  'https://pt3-assessment6-duelbots.herokuapp.com/' || 'http://localhost:3000';
+
 const drawBtn = document.querySelector('#draw');
 const choicesDiv = document.querySelector('#choices');
 const compDuoDiv = document.querySelector('#comp-duo');
@@ -118,7 +121,7 @@ const putBotBack = (id) => {
 };
 
 const drawFive = () => {
-  axios.get('http://localhost:3000/api/robots/five').then((res) => {
+  axios.get('/api/robots/five').then((res) => {
     choices = res.data.choices;
     compDuo = res.data.compDuo;
     renderChoices();
@@ -136,13 +139,11 @@ const duel = () => {
     .querySelectorAll('.bot-btn')
     .forEach((btn) => btn.classList.add('hide'));
   setTimeout(() => {
-    axios
-      .post('http://localhost:3000/api/duel', { compDuo, playerDuo })
-      .then(({ data }) => {
-        resultsText.textContent = data;
-        playAgainBtn.classList.remove('hide');
-        getPlayerStats();
-      });
+    axios.post('/api/duel', { compDuo, playerDuo }).then(({ data }) => {
+      resultsText.textContent = data;
+      playAgainBtn.classList.remove('hide');
+      getPlayerStats();
+    });
   }, 1500);
 };
 
@@ -170,7 +171,7 @@ const getPlayerStats = () => {
 
 const getAllBots = () => {
   axios
-    .get('http://localhost:3000/api/robots')
+    .get('/api/robots')
     .then(({ data }) => {
       allBotsDiv.innerHTML = '';
 
