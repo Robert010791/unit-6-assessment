@@ -19,6 +19,11 @@ var rollbar = new Rollbar({
 // record a generic message and send it to Rollbar
 rollbar.log('Hello world!');
 
+app.get('/', (req, res) => {
+  rollbar.info('HTML served successfully');
+  res.sendFile(path.join(__dirname, '/index.html'));
+});
+
 app.get('/api/robots', (req, res) => {
   try {
     rollbar.info('Someone got the list of all the robots');
